@@ -4,48 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Semakan e-RPH 2026 | SMK Selirik</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f3f4f6;
+            background-color: #2d0505; /* Sangat Dark Maroon background body */
+            color: #333;
         }
-        /* Tema Dark Maroon */
-        .bg-maroon-dark { background-color: #4a0404; }
-        .bg-maroon { background-color: #800000; }
+
+        /* Custom Colors */
+        .bg-maroon-primary { background-color: #4a0404; } /* Dark Maroon Header */
+        .bg-maroon-light { background-color: #800000; }
         .text-maroon { color: #800000; }
         .border-maroon { border-color: #800000; }
-        
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+        /* Glassmorphism Card Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
-        .week-card {
-            transition: transform 0.2s;
-        }
-        .week-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        /* Status Badges */
+
+        /* Status Colors */
         .status-badge {
             font-size: 0.75rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 700;
             text-transform: uppercase;
+            display: inline-block;
         }
-        .status-ok { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
-        .status-fail { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
-        .status-info { background-color: #e0f2fe; color: #075985; border: 1px solid #38bdf8; }
+        .status-ok { background-color: #dcfce7; color: #166534; border: 1px solid #86efac; }
+        .status-fail { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+        .status-other { background-color: #e0f2fe; color: #075985; border: 1px solid #7dd3fc; }
 
-        /* Loader Animation */
+        /* Loader */
         .loader {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #800000;
@@ -53,122 +55,130 @@
             width: 40px;
             height: 40px;
             animation: spin 1s linear infinite;
-            margin: 20px auto;
             display: none;
+            margin: 20px auto;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Fade In Animation */
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <div class="bg-maroon-dark text-white shadow-xl rounded-b-[40px] relative z-10">
-        <div class="container mx-auto px-4 py-8 flex flex-col items-center justify-center text-center">
-            <div id="header-logo" class="mb-4 bg-white p-2 rounded-full h-24 w-24 flex items-center justify-center shadow-lg hidden">
-                <img id="logo-img" src="" alt="Logo Sekolah" class="h-20 w-20 object-contain">
+    <header class="bg-maroon-primary text-white shadow-2xl relative z-10 rounded-b-[3rem] pb-8 pt-4">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center mb-4">
+                <div class="bg-white p-2 rounded-full h-24 w-24 flex items-center justify-center shadow-lg border-4 border-maroon-light">
+                    <img id="school-logo" src="" alt="Logo" class="h-full w-full object-contain hidden">
+                    <i id="default-logo" class="fas fa-school text-5xl text-maroon"></i>
+                </div>
             </div>
-            <div id="default-logo" class="mb-4 text-white opacity-80">
-                <i class="fas fa-school text-5xl"></i>
-            </div>
-
-            <h1 class="text-2xl md:text-4xl font-bold uppercase tracking-wide">SMK SELIRIK, KAPIT</h1>
-            <p class="text-gray-200 mt-1 text-sm md:text-lg">Portal Semakan Rekod Penghantaran e-RPH</p>
-            <div class="mt-4 inline-block bg-white text-maroon font-bold px-6 py-1 rounded-full text-sm shadow-md">
+            
+            <h1 class="text-2xl md:text-4xl font-bold uppercase tracking-widest text-white drop-shadow-md">SMK SELIRIK, KAPIT</h1>
+            <p class="text-gray-300 mt-2 text-sm md:text-lg font-light tracking-wide">Portal Semakan Rekod Penghantaran e-RPH</p>
+            <div class="mt-4 inline-block bg-white text-maroon font-bold px-6 py-1 rounded-full text-sm shadow-lg">
                 TAHUN 2026
             </div>
         </div>
-    </div>
+    </header>
 
-    <main class="flex-grow container mx-auto px-4 -mt-10 mb-10 relative z-20">
+    <main class="flex-grow container mx-auto px-4 -mt-10 relative z-20 mb-10">
         
-        <div class="glass-panel p-6 md:p-10 max-w-3xl mx-auto border-t-4 border-maroon">
-            <h2 class="text-center text-gray-700 font-bold mb-6 text-lg"><i class="fas fa-search mr-2"></i>Semak Rekod Guru</h2>
+        <div class="glass-card p-8 max-w-3xl mx-auto mb-8 border-t-4 border-maroon">
+            <h2 class="text-center text-gray-800 font-bold mb-6 text-lg uppercase"><i class="fas fa-search mr-2 text-maroon"></i>Semak Rekod Guru</h2>
             
-            <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex flex-col md:flex-row gap-3">
                 <input type="text" id="ic-input" placeholder="Masukkan No. Kad Pengenalan (Contoh: 880101131234)" 
-                    class="flex-grow p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-900 text-center md:text-left shadow-inner text-lg">
-                <button onclick="fetchData()" 
-                    class="bg-maroon hover:bg-red-900 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-300 flex items-center justify-center gap-2">
-                    SEMAK <i class="fas fa-arrow-right"></i>
+                    class="flex-grow p-4 rounded-lg border-2 border-gray-200 focus:border-maroon focus:outline-none text-center md:text-left text-lg shadow-inner bg-gray-50 transition-colors">
+                
+                <button onclick="performCheck()" 
+                    class="bg-maroon-light hover:bg-red-900 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-300 flex items-center justify-center gap-2 transform active:scale-95">
+                    SEMAK <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
-            
+
             <div id="loader" class="loader"></div>
-            <p id="error-message" class="text-red-600 text-center mt-4 hidden font-semibold bg-red-100 p-3 rounded-lg"></p>
+            <p id="error-msg" class="text-red-500 text-center mt-4 hidden font-semibold bg-red-100 p-3 rounded border border-red-200"></p>
         </div>
 
-        <div id="result-section" class="hidden mt-8 max-w-5xl mx-auto animate-fade-in">
+        <div id="result-container" class="hidden fade-in max-w-6xl mx-auto">
             
-            <div class="glass-panel p-6 mb-6 flex flex-col md:flex-row items-center md:items-start gap-6 border-l-8 border-maroon">
-                <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-md flex-shrink-0">
-                    <i class="fas fa-user text-4xl text-gray-400"></i>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                
+                <div class="glass-card p-6 flex flex-col justify-center items-center text-center lg:col-span-1 border-l-8 border-maroon">
+                    <div class="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center overflow-hidden border-2 border-maroon shadow">
+                        <i class="fas fa-user-tie text-4xl text-gray-500"></i>
+                    </div>
+                    <h2 id="disp-name" class="text-xl font-bold text-gray-800 leading-tight">Nama Guru</h2>
+                    <p id="disp-jawatan" class="text-maroon font-bold text-sm uppercase mt-1">Jawatan</p>
+                    <div class="mt-3 bg-gray-100 px-4 py-1 rounded-full text-xs font-mono text-gray-600 border border-gray-200">
+                        <i class="fas fa-id-card mr-1"></i> <span id="disp-ic">IC</span>
+                    </div>
                 </div>
-                <div class="text-center md:text-left w-full">
-                    <h2 id="disp-name" class="text-2xl font-bold text-gray-800">Nama Guru</h2>
-                    <p id="disp-jawatan" class="text-maroon font-bold uppercase tracking-wider text-sm mt-1">Jawatan</p>
-                    <div class="mt-3 inline-flex items-center bg-gray-100 px-3 py-1 rounded text-sm text-gray-600">
-                        <i class="fas fa-id-card mr-2"></i> <span id="disp-ic">No IC</span>
+
+                <div class="glass-card p-6 lg:col-span-2 flex flex-col justify-center">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center p-3 bg-red-50 rounded-lg border border-red-100">
+                            <div id="stat-tidak" class="text-3xl font-bold text-red-600">0</div>
+                            <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase mt-1">Tidak Hantar</div>
+                        </div>
+                        <div class="text-center p-3 bg-green-50 rounded-lg border border-green-100">
+                            <div id="stat-hantar" class="text-3xl font-bold text-green-600">0</div>
+                            <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase mt-1">Bil. Hantar</div>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                            <div id="stat-minggu" class="text-3xl font-bold text-gray-700">0</div>
+                            <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase mt-1">Jum. Minggu</div>
+                        </div>
+                        <div class="text-center p-3 bg-blue-50 rounded-lg border border-blue-100">
+                            <div id="stat-peratus" class="text-3xl font-bold text-blue-600">0%</div>
+                            <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase mt-1">Peratus</div>
+                        </div>
+                    </div>
+                    
+                    <div id="catatan-box" class="mt-4 bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded hidden">
+                        <p class="text-xs font-bold text-yellow-700 uppercase">Catatan:</p>
+                        <p id="stat-catatan" class="text-sm text-gray-700 italic"></p>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div id="stat-hantar" class="text-3xl font-bold text-green-600">0</div>
-                    <div class="text-xs text-gray-500 font-bold uppercase">Bil Hantar</div>
+            <div class="glass-card p-6 md:p-8">
+                <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
+                    <h3 class="text-xl font-bold text-gray-700 flex items-center">
+                        <i class="fas fa-calendar-alt mr-3 text-maroon"></i>Rekod Penghantaran
+                    </h3>
+                    <span class="text-xs text-gray-400">Minggu 1 - 43</span>
                 </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div id="stat-tidak" class="text-3xl font-bold text-red-600">0</div>
-                    <div class="text-xs text-gray-500 font-bold uppercase">Bil Tidak Hantar</div>
-                </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div id="stat-minggu" class="text-3xl font-bold text-gray-700">0</div>
-                    <div class="text-xs text-gray-500 font-bold uppercase">Jumlah Minggu</div>
-                </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
-                    <div id="stat-peratus" class="text-3xl font-bold text-blue-600">0%</div>
-                    <div class="text-xs text-gray-500 font-bold uppercase">Peratus</div>
-                </div>
+
+                <div id="weeks-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    </div>
             </div>
 
-            <div id="box-catatan" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8 rounded shadow-sm hidden">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-exclamation-circle text-yellow-600"></i>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-yellow-700 font-bold">Catatan Pentadbir:</p>
-                        <p id="disp-catatan" class="text-sm text-yellow-800 mt-1"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-700"><i class="fas fa-calendar-alt mr-2 text-maroon"></i>Rekod Mingguan</h3>
-                <div class="flex-grow border-b ml-4 border-gray-300"></div>
-            </div>
-            
-            <div id="weeks-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                </div>
         </div>
     </main>
 
-    <footer class="bg-gray-800 text-gray-400 py-6 text-center text-sm mt-auto">
-        <p>Hakcipta NDJE@Selirik, Kapit 2026</p>
+    <footer class="bg-gray-900 text-gray-400 py-6 text-center text-xs mt-auto">
+        <p>&copy; Hakcipta NDJE@Selirik, Kapit 2026</p>
     </footer>
 
     <script>
-        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSAfGkb0V0XOKhlyjNgHNeSTVoRO6tw8gorjTKVzJ9lqLwm_pL38utfOBJOu7yXBMszjk6m78XP_6f2/pub?gid=1853580490&single=true&output=csv';
+        // --- CONFIGURATION ---
+        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSAfGkb0V0XOKhlyjNgHNeSTVoRO6tw8gorjTKVzJ9lqLwm_pL38utfOBJOu7yXBMszjk6m78XP_6f2/pub?gid=1853580490&single=true&output=csv";
 
-        // 1. Helper function to turn "A", "AA", "BC" into array index (0-based)
-        function getColIndex(colLetter) {
+        // Helper to convert Column Letters (A, Z, AA) to Index (0, 25, 26)
+        function getColIndex(letter) {
             let column = 0;
-            for (let i = 0; i < colLetter.length; i++) {
-                column += (colLetter.charCodeAt(i) - 64) * Math.pow(26, colLetter.length - i - 1);
+            for (let i = 0; i < letter.length; i++) {
+                column += (letter.charCodeAt(i) - 64) * Math.pow(26, letter.length - i - 1);
             }
             return column - 1; 
         }
 
-        // 2. Configuration for Weeks (Based on User Prompt)
+        // --- MAPPING CONFIGURATION (Based on Prompt) ---
+        // Format: { w: WeekNum, date: "Date", h: "HantarCol", s: "StatusCol" }
         const weeksConfig = [
             { w: 1, date: "30.01.2026", h: "F", s: "G" },
             { w: 2, date: "30.01.2026", h: "J", s: "K" },
@@ -176,7 +186,7 @@
             { w: 4, date: "06.02.2026", h: "R", s: "S" },
             { w: 5, date: "13.02.2026", h: "V", s: "W" },
             { w: 6, date: "20.02.2026", h: "Z", s: "AA" },
-            { w: 7, date: "27.02.2026", h: "AD", s: "AF" },
+            { w: 7, date: "27.02.2026", h: "AD", s: "AF" }, // Note: Deviation in columns
             { w: 8, date: "06.03.2026", h: "AH", s: "AI" },
             { w: 9, date: "13.03.2026", h: "AL", s: "AM" },
             { w: 10, date: "20.03.2026", h: "AP", s: "AQ" },
@@ -184,7 +194,7 @@
             { w: 12, date: "10.04.2026", h: "AX", s: "AY" },
             { w: 13, date: "17.04.2026", h: "BC", s: "BD" },
             { w: 14, date: "24.04.2026", h: "BF", s: "BG" },
-            { w: 15, date: "01.05.2026", h: "BJ", s: "BL" },
+            { w: 15, date: "01.05.2026", h: "BJ", s: "BL" }, // Note: Deviation in columns
             { w: 16, date: "08.05.2026", h: "BN", s: "BO" },
             { w: 17, date: "15.05.2026", h: "BR", s: "BS" },
             { w: 18, date: "22.05.2026", h: "BV", s: "BW" },
@@ -215,151 +225,150 @@
             { w: 43, date: "04.12.2026", h: "FQ", s: "FS" }
         ];
 
-        // 3. Main Search Function
-        function fetchData() {
-            const rawInput = document.getElementById('ic-input').value;
-            const ic = rawInput.replace(/[^0-9]/g, ''); // Remove dash/space
-            const loader = document.getElementById('loader');
-            const errorMsg = document.getElementById('error-message');
-            const resultSection = document.getElementById('result-section');
+        // --- MAIN FUNCTIONS ---
+
+        function performCheck() {
+            const rawIc = document.getElementById("ic-input").value;
+            const ic = rawIc.replace(/[^0-9]/g, ""); // Remove non-numeric chars
+            const loader = document.getElementById("loader");
+            const errorMsg = document.getElementById("error-msg");
+            const resultContainer = document.getElementById("result-container");
 
             // Reset UI
-            errorMsg.classList.add('hidden');
-            resultSection.classList.add('hidden');
+            errorMsg.classList.add("hidden");
+            resultContainer.classList.add("hidden");
             
-            if(ic.length < 6) {
+            if (ic.length < 6) {
                 errorMsg.textContent = "Sila masukkan No. Kad Pengenalan yang sah.";
-                errorMsg.classList.remove('hidden');
+                errorMsg.classList.remove("hidden");
                 return;
             }
 
-            loader.style.display = 'block';
+            loader.style.display = "block";
 
+            // Fetch Data
             Papa.parse(SHEET_URL, {
                 download: true,
                 complete: function(results) {
-                    loader.style.display = 'none';
-                    const data = results.data;
-                    processData(data, ic);
+                    loader.style.display = "none";
+                    processData(results.data, ic);
                 },
                 error: function(err) {
-                    loader.style.display = 'none';
-                    errorMsg.textContent = "Gagal menghubungi pelayan data. Sila cuba lagi.";
-                    errorMsg.classList.remove('hidden');
+                    loader.style.display = "none";
+                    errorMsg.textContent = "Gagal menyambung ke pangkalan data. Sila cuba sebentar lagi.";
+                    errorMsg.classList.remove("hidden");
                 }
             });
         }
 
-        // 4. Data Processing
-        function processData(data, targetIC) {
-            const errorMsg = document.getElementById('error-message');
-            
-            // Map main columns (0-based)
-            const colLogo = getColIndex("A");
-            const colIC = getColIndex("B");
-            const colName = getColIndex("C");
-            // Assuming Jawatan is in D since it's usually next to Name, if undefined we hide it or show empty
-            const colJawatan = getColIndex("D"); 
+        function processData(data, searchIc) {
+            const errorMsg = document.getElementById("error-msg");
 
-            // Find Row
+            // 1. Check for School Logo in A1 (Row 0, Col 0)
+            if (data.length > 0 && data[0][0] && data[0][0].startsWith("http")) {
+                const logoImg = document.getElementById("school-logo");
+                const logoIcon = document.getElementById("default-logo");
+                logoImg.src = data[0][0];
+                logoImg.classList.remove("hidden");
+                logoIcon.classList.add("hidden");
+            }
+
+            // 2. Identify Column Indexes
+            const colIc = getColIndex("B");
+            const colName = getColIndex("C");
+            const colJawatan = getColIndex("D"); // Assuming Jawatan is D as per typical flow, or explicit if named
+            
+            // 3. Find Teacher
             const teacherRow = data.find(row => {
-                if(!row[colIC]) return false;
-                const rowIC = row[colIC].toString().replace(/[^0-9]/g, '');
-                return rowIC === targetIC;
+                if (!row[colIc]) return false;
+                // Clean CSV IC
+                const rowIcClean = row[colIc].toString().replace(/[^0-9]/g, "");
+                return rowIcClean === searchIc;
             });
 
             if (!teacherRow) {
-                errorMsg.textContent = "Maaf, No. Kad Pengenalan tidak ditemui dalam pangkalan data.";
-                errorMsg.classList.remove('hidden');
+                errorMsg.textContent = "No. Kad Pengenalan tidak ditemui. Sila semak semula.";
+                errorMsg.classList.remove("hidden");
                 return;
             }
 
-            // Fill Header & Profile
-            const logoUrl = teacherRow[colLogo];
-            const logoDiv = document.getElementById('header-logo');
-            const defLogo = document.getElementById('default-logo');
-            if(logoUrl && logoUrl.length > 5) {
-                document.getElementById('logo-img').src = logoUrl;
-                logoDiv.classList.remove('hidden');
-                defLogo.classList.add('hidden');
-            } else {
-                logoDiv.classList.add('hidden');
-                defLogo.classList.remove('hidden');
-            }
+            // 4. Populate Profile
+            document.getElementById("disp-name").textContent = teacherRow[colName] || "NAMA TIDAK DIJUMPAI";
+            document.getElementById("disp-ic").textContent = teacherRow[colIc];
+            // If colJawatan (D) is empty, fallback to "GURU"
+            document.getElementById("disp-jawatan").textContent = teacherRow[colJawatan] || "GURU";
 
-            document.getElementById('disp-name').textContent = teacherRow[colName] || "NAMA TIDAK DITEMUI";
-            document.getElementById('disp-ic').textContent = teacherRow[colIC];
-            document.getElementById('disp-jawatan').textContent = teacherRow[colJawatan] || "GURU";
-
-            // Fill Summary Stats
-            document.getElementById('stat-tidak').textContent = teacherRow[getColIndex("GG")] || "0";
-            document.getElementById('stat-hantar').textContent = teacherRow[getColIndex("GH")] || "0";
-            document.getElementById('stat-minggu').textContent = teacherRow[getColIndex("GI")] || "0";
-            document.getElementById('stat-peratus').textContent = teacherRow[getColIndex("GJ")] || "0%";
-
-            // Fill Catatan
+            // 5. Populate Stats
+            document.getElementById("stat-tidak").textContent = teacherRow[getColIndex("GG")] || "0";
+            document.getElementById("stat-hantar").textContent = teacherRow[getColIndex("GH")] || "0";
+            document.getElementById("stat-minggu").textContent = teacherRow[getColIndex("GI")] || "0";
+            document.getElementById("stat-peratus").textContent = teacherRow[getColIndex("GJ")] || "0%";
+            
+            // Catatan
             const catatan = teacherRow[getColIndex("GK")];
-            const boxCatatan = document.getElementById('box-catatan');
-            if(catatan && catatan.trim() !== "") {
-                document.getElementById('disp-catatan').textContent = catatan;
-                boxCatatan.classList.remove('hidden');
+            const catBox = document.getElementById("catatan-box");
+            if (catatan && catatan.trim() !== "") {
+                document.getElementById("stat-catatan").textContent = catatan;
+                catBox.classList.remove("hidden");
             } else {
-                boxCatatan.classList.add('hidden');
+                catBox.classList.add("hidden");
             }
 
-            // Build Weekly Grid
-            const gridContainer = document.getElementById('weeks-grid');
-            gridContainer.innerHTML = ''; // Clear previous
+            // 6. Populate Weeks Grid
+            const grid = document.getElementById("weeks-grid");
+            grid.innerHTML = ""; // Clear old data
 
             weeksConfig.forEach(week => {
-                const hantarVal = teacherRow[getColIndex(week.h)] || "-";
                 const statusVal = teacherRow[getColIndex(week.s)] || "";
+                const hantarVal = teacherRow[getColIndex(week.h)] || "-";
 
-                // Determine Styling based on status text (case insensitive)
-                let statusClass = "status-info";
-                let iconClass = "fa-info-circle";
+                // Determine Styling based on Status text
+                let statusClass = "status-other";
+                let icon = "fa-info-circle";
                 const sLower = statusVal.toLowerCase();
 
-                if(sLower.includes('hantar') || sLower.includes('selesai')) {
+                if (sLower.includes("hantar") && !sLower.includes("tidak")) {
                     statusClass = "status-ok";
-                    iconClass = "fa-check-circle";
-                } else if (sLower.includes('tidak') || sLower.includes('gagal')) {
+                    icon = "fa-check-circle";
+                } else if (sLower.includes("tidak") || sLower.includes("gagal")) {
                     statusClass = "status-fail";
-                    iconClass = "fa-times-circle";
+                    icon = "fa-times-circle";
+                } else if (sLower.includes("cuti") || sLower.includes("pengecualian")) {
+                    statusClass = "status-other";
+                    icon = "fa-calendar-day";
                 }
 
-                const cardHTML = `
-                <div class="week-card bg-white rounded-lg p-4 shadow-sm border border-gray-100 flex flex-col justify-between h-full">
-                    <div>
+                const card = `
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-100 hover:shadow-md transition duration-200">
                         <div class="flex justify-between items-start mb-2">
-                            <h4 class="font-bold text-gray-800">Minggu ${week.w}</h4>
-                            <span class="text-xs text-gray-400 font-mono">${week.date}</span>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-sm">Minggu ${week.w}</h4>
+                                <span class="text-[10px] text-gray-500 font-mono block">${week.date}</span>
+                            </div>
+                            <div class="${statusClass} status-badge flex items-center gap-1">
+                                <i class="fas ${icon}"></i> <span>${statusVal || "TIADA"}</span>
+                            </div>
                         </div>
-                        <div class="mb-2">
-                            <span class="${statusClass} status-badge flex items-center w-fit gap-1">
-                                <i class="fas ${iconClass}"></i> ${statusVal || "Tiada Status"}
-                            </span>
+                        <div class="mt-2 pt-2 border-t border-gray-200 border-dashed">
+                            <p class="text-[10px] text-gray-400 uppercase tracking-wider">Tarikh Hantar</p>
+                            <p class="text-sm font-semibold text-gray-700 truncate">${hantarVal}</p>
                         </div>
                     </div>
-                    <div class="pt-2 mt-1 border-t border-gray-100">
-                        <p class="text-xs text-gray-500">Tarikh Hantar:</p>
-                        <p class="font-semibold text-gray-700 text-sm">${hantarVal}</p>
-                    </div>
-                </div>
                 `;
-                gridContainer.insertAdjacentHTML('beforeend', cardHTML);
+                grid.insertAdjacentHTML("beforeend", card);
             });
 
-            // Show Result Section
-            document.getElementById('result-section').classList.remove('hidden');
+            // Show Result
+            document.getElementById("result-container").classList.remove("hidden");
         }
 
-        // Allow Enter key
-        document.getElementById('ic-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                fetchData();
-            }
+        // Allow Enter key for Search
+        document.getElementById("ic-input").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") performCheck();
         });
+
     </script>
 </body>
 </html>
+
+ 
