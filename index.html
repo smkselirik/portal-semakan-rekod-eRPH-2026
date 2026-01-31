@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semakan e-RPH 2026 | SMK Selirik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* Dark Maroon Theme */
+        .bg-maroon {
+            background-color: #4a0404; /* Deep Dark Maroon */
+        }
+        .text-maroon {
+            color: #4a0404;
+        }
+        .border-maroon {
+            border-color: #4a0404;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .week-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .week-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        /* Status Badges */
+        .status-hantar {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #34d399;
+        }
+        .status-tidak {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #f87171;
+        }
+        .status-cuti {
+            background-color: #e0f2fe;
+            color: #075985;
+            border: 1px solid #7dd3fc;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #800000;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <div class="bg-maroon text-white pb-24 pt-10 px-4 shadow-lg rounded-b-[3rem]">
+        <div class="max-w-4xl mx-auto text-center">
+            <div id="school-logo-container" class="mb-4">
+                <i class="fas fa-school text-5xl opacity-80"></i>
+            </div>
+            
+            <h1 class="text-3xl md:text-4xl font-bold uppercase tracking-wider mb-2">SMK SELIRIK, KAPIT</h1>
+            <p class="text-lg md:text-xl font-light opacity-90">Portal Semakan Rekod Penghantaran e-RPH</p>
+            <div class="mt-2 inline-block bg-white text-maroon px-4 py-1 rounded-full font-bold text-sm shadow-md">
+                TAHUN 2026
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-grow -mt-16 px-4 mb-10">
+        <div class="max-w-4xl mx-auto">
+            
+            <div class="glass-effect p-8 mb-8 border-t-4 border-maroon">
+                <label class="block text-gray-700 text-sm font-bold mb-2 text-center" for="ic-input">
+                    Masukkan No. Kad Pengenalan
+                </label>
+                <div class="flex flex-col md:flex-row gap-3 justify-center">
+                    <input type="text" id="ic-input" placeholder="Contoh: 880101135566" 
+                        class="w-full md:w-2/3 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-900 transition text-center md:text-left text-lg">
+                    <button onclick="checkRecord()" 
+                        class="w-full md:w-auto bg-maroon hover:bg-red-900 text-white font-bold py-3 px-8 rounded-lg shadow-md transition transform active:scale-95">
+                        <i class="fas fa-search mr-2"></i> SEMAK
+                    </button>
+                </div>
+                <div id="loading" class="loader mt-4"></div>
+                <p id="error-msg" class="text-red-600 text-center mt-3 hidden font-semibold"></p>
+            </div>
+
+            <div id="result-container" class="hidden animate-fade-in">
+                
+                <div class="glass-effect p-6 mb-6 border-l-4 border-maroon flex flex-col md:flex-row items-center md:items-start gap-6">
+                    <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border-2 border-maroon shadow-md shrink-0">
+                        <img id="profile-img" src="" alt="Guru" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=GURU&background=4a0404&color=fff'">
+                    </div>
+                    <div class="text-center md:text-left w-full">
+                        <h2 id="teacher-name" class="text-2xl font-bold text-gray-800 mb-1">Nama Guru</h2>
+                        <p class="text-maroon font-bold uppercase tracking-wide text-sm mb-2" id="teacher-position">Jawatan Guru</p>
+                        <div class="inline-flex items-center bg-gray-100 px-3 py-1 rounded-md text-gray-600 text-sm">
+                            <i class="fas fa-id-card mr-2"></i> <span id="teacher-ic">IC Number</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                        <div class="text-3xl font-bold text-green-600" id="stat-hantar">0</div>
+                        <div class="text-xs text-gray-500 uppercase font-semibold">Bil. Hantar</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                        <div class="text-3xl font-bold text-red-600" id="stat-tidak">0</div>
+                        <div class="text-xs text-gray-500 uppercase font-semibold">Bil. Tidak Hantar</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                        <div class="text-3xl font-bold text-gray-800" id="stat-minggu">0</div>
+                        <div class="text-xs text-gray-500 uppercase font-semibold">Jumlah Minggu</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                        <div class="text-3xl font-bold text-blue-600" id="stat-peratus">0%</div>
+                        <div class="text-xs text-gray-500 uppercase font-semibold">Peratus</div>
+                    </div>
+                </div>
+
+                <div id="catatan-box" class="glass-effect p-4 mb-6 border-l-4 border-yellow-500 hidden">
+                    <h3 class="font-bold text-gray-700 text-sm mb-1">Catatan Admin:</h3>
+                    <p id="catatan-text" class="text-gray-600 italic"></p>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-700 mb-4 border-b-2 border-gray-200 pb-2"><i class="fas fa-calendar-check mr-2 text-maroon"></i>Rekod Mingguan</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="rph-grid">
+                    </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-6 text-center text-sm">
+        <p>Hakcipta NDJE@Selirik, Kapit 2026</p>
+    </footer>
+
+    <script>
+        // Google Sheet CSV Link
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSAfGkb0V0XOKhlyjNgHNeSTVoRO6tw8gorjTKVzJ9lqLwm_pL38utfOBJOu7yXBMszjk6m78XP_6f2/pub?gid=1853580490&single=true&output=csv';
+
+        // Column Mapping Logic (Helper to convert Excel letters to Array Index)
+        function getColIndex(letter) {
+            let column = 0;
+            for (let i = 0; i < letter.length; i++) {
+                column += (letter.charCodeAt(i) - 64) * Math.pow(26, letter.length - i - 1);
+            }
+            return column - 1; // Zero-based index
+        }
+
+        // Configuration based on Prompt
+        const COLS = {
+            LOGO: getColIndex('A'),
+            IC: getColIndex('B'),
+            NAME: getColIndex('C'),
+            JAWATAN: getColIndex('D'), // Assuming Col D is Jawatan based on "bold" requirement
+            // Summary Columns
+            BIL_TIDAK: getColIndex('GG'),
+            BIL_HANTAR: getColIndex('GH'),
+            JUM_MINGGU: getColIndex('GI'),
+            PERATUS: getColIndex('GJ'),
+            CATATAN: getColIndex('GK')
+        };
+
+        // Week Mapping Data
+        const weeksData = [
+            { id: 1, date: "30.01.2026", hantar: "F", status: "G" },
+            { id: 2, date: "30.01.2026", hantar: "J", status: "K" },
+            { id: 3, date: "30.01.2026", hantar: "N", status: "O" },
+            { id: 4, date: "06.02.2026", hantar: "R", status: "S" },
+            { id: 5, date: "13.02.2026", hantar: "V", status: "W" },
+            { id: 6, date: "20.02.2026", hantar: "Z", status: "AA" },
+            { id: 7, date: "27.02.2026", hantar: null, status: "AF" }, // Only Status
+            { id: 8, date: "06.03.2026", hantar: "AH", status: "AI" },
+            { id: 9, date: "13.03.2026", hantar: "AL", status: "AM" },
+            { id: 10, date: "20.03.2026", hantar: "AP", status: "AQ" },
+            { id: 11, date: "03.04.2026", hantar: "AT", status: "AU" },
+            { id: 12, date: "10.04.2026", hantar: "AX", status: "AY" },
+            { id: 13, date: "17.04.2026", hantar: "BC", status: "BD" },
+            { id: 14, date: "24.04.2026", hantar: "BF", status: "BG" },
+            { id: 15, date: "01.05.2026", hantar: null, status: "BL" }, // Only Status
+            { id: 16, date: "08.05.2026", hantar: "BN", status: "BO" },
+            { id: 17, date: "15.05.2026", hantar: "BR", status: "BS" },
+            { id: 18, date: "22.05.2026", hantar: "BV", status: "BW" },
+            { id: 19, date: "12.06.2026", hantar: "BZ", status: "CA" },
+            { id: 20, date: "19.06.2026", hantar: "CD", status: "CE" },
+            { id: 21, date: "26.06.2026", hantar: "CH", status: "CI" },
+            { id: 22, date: "03.07.2026", hantar: "CL", status: "CM" },
+            { id: 23, date: "10.07.2026", hantar: "CP", status: "CQ" },
+            { id: 24, date: "17.07.2026", hantar: "CT", status: "CU" },
+            { id: 25, date: "24.07.2026", hantar: "CX", status: "CY" },
+            { id: 26, date: "31.07.2026", hantar: "DB", status: "DC" },
+            { id: 27, date: "07.08.2026", hantar: "DF", status: "DG" },
+            { id: 28, date: "14.08.2026", hantar: "DJ", status: "DK" },
+            { id: 29, date: "21.08.2026", hantar: "DN", status: "DO" },
+            { id: 30, date: "28.08.2026", hantar: "DR", status: "DS" },
+            { id: 31, date: "11.09.2026", hantar: "DV", status: "DW" },
+            { id: 32, date: "18.09.2026", hantar: "DZ", status: "EA" },
+            { id: 33, date: "25.09.2026", hantar: "ED", status: "EE" },
+            { id: 34, date: "02.10.2026", hantar: "EH", status: "EI" },
+            { id: 35, date: "09.10.2026", hantar: "EL", status: "EM" },
+            { id: 36, date: "16.10.2026", hantar: "EP", status: "EQ" },
+            { id: 37, date: "23.10.2026", hantar: "ET", status: "EU" },
+            { id: 38, date: "30.10.2026", hantar: "EX", status: "EY" },
+            { id: 39, date: "06.11.2026", hantar: "FB", status: "FC" },
+            { id: 40, date: "13.11.2026", hantar: "FF", status: "FG" },
+            { id: 41, date: "20.11.2026", hantar: "FJ", status: "FK" },
+            { id: 42, date: "27.11.2026", hantar: "FN", status: "FO" },
+            { id: 43, date: "04.12.2026", hantar: "FQ", status: "FS" }
+        ];
+
+        let csvData = [];
+
+        function checkRecord() {
+            const input = document.getElementById('ic-input').value.trim().replace(/-/g, "").replace(/\s/g, "");
+            const resultDiv = document.getElementById('result-container');
+            const errorMsg = document.getElementById('error-msg');
+            const loader = document.getElementById('loading');
+
+            // Reset UI
+            resultDiv.classList.add('hidden');
+            errorMsg.classList.add('hidden');
+            
+            if (!input) {
+                errorMsg.textContent = "Sila masukkan No. Kad Pengenalan.";
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            loader.style.display = 'block';
+
+            // Fetch Data
+            Papa.parse(SHEET_URL, {
+                download: true,
+                complete: function(results) {
+                    loader.style.display = 'none';
+                    csvData = results.data;
+                    processData(input);
+                },
+                error: function(err) {
+                    loader.style.display = 'none';
+                    errorMsg.textContent = "Gagal menyambung ke pangkalan data. Sila cuba sebentar lagi.";
+                    errorMsg.classList.remove('hidden');
+                }
+            });
+        }
+
+        function processData(ic) {
+            const errorMsg = document.getElementById('error-msg');
+            
+            // Find row where Column B matches IC (ignoring header)
+            const teacherRow = csvData.find(row => {
+                if(!row[COLS.IC]) return false;
+                // Clean data IC just in case
+                const dataIC = row[COLS.IC].toString().replace(/-/g, "").replace(/\s/g, "");
+                return dataIC === ic;
+            });
+
+            if (!teacherRow) {
+                errorMsg.textContent = "Rekod tidak dijumpai. Sila pastikan No. Kad Pengenalan anda betul.";
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            // Populate Data
+            document.getElementById('teacher-name').textContent = teacherRow[COLS.NAME] || "NAMA TIDAK DITEMUI";
+            document.getElementById('teacher-ic').textContent = teacherRow[COLS.IC];
+            document.getElementById('teacher-position').textContent = teacherRow[COLS.JAWATAN] || "GURU";
+            
+            // Handle Image (Column A)
+            const logoUrl = teacherRow[COLS.LOGO];
+            const imgElem = document.getElementById('profile-img');
+            if(logoUrl && (logoUrl.startsWith('http') || logoUrl.startsWith('data:image'))) {
+                imgElem.src = logoUrl;
+            } else {
+                // Fallback avatar if Col A is empty or not a link
+                imgElem.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(teacherRow[COLS.NAME])}&background=4a0404&color=fff`;
+            }
+
+            // Populate Stats
+            document.getElementById('stat-hantar').textContent = teacherRow[COLS.BIL_HANTAR] || "0";
+            document.getElementById('stat-tidak').textContent = teacherRow[COLS.BIL_TIDAK] || "0";
+            document.getElementById('stat-minggu').textContent = teacherRow[COLS.JUM_MINGGU] || "0";
+            document.getElementById('stat-peratus').textContent = teacherRow[COLS.PERATUS] || "0%";
+
+            // Handle Catatan
+            const catatan = teacherRow[COLS.CATATAN];
+            const catBox = document.getElementById('catatan-box');
+            if(catatan && catatan.trim() !== "") {
+                document.getElementById('catatan-text').textContent = catatan;
+                catBox.classList.remove('hidden');
+            } else {
+                catBox.classList.add('hidden');
+            }
+
+            // Generate Grid
+            const gridContainer = document.getElementById('rph-grid');
+            gridContainer.innerHTML = '';
+
+            weeksData.forEach(week => {
+                const statusIdx = getColIndex(week.status);
+                const statusRaw = teacherRow[statusIdx] ? teacherRow[statusIdx].trim() : "-";
+                
+                let hantarRaw = "-";
+                if (week.hantar) {
+                    const hantarIdx = getColIndex(week.hantar);
+                    hantarRaw = teacherRow[hantarIdx] ? teacherRow[hantarIdx] : "-";
+                }
+
+                // Determine styling based on status content
+                let statusClass = "bg-gray-100 text-gray-500 border-gray-200"; // Default
+                let icon = "fa-minus-circle";
+
+                const statusLower = statusRaw.toLowerCase();
+                
+                if (statusLower.includes("hantar") && !statusLower.includes("tidak")) {
+                    statusClass = "status-hantar";
+                    icon = "fa-check-circle";
+                } else if (statusLower.includes("tidak")) {
+                    statusClass = "status-tidak";
+                    icon = "fa-times-circle";
+                } else if (statusLower.includes("cuti") || statusLower.includes("pengecualian")) {
+                    statusClass = "status-cuti";
+                    icon = "fa-info-circle";
+                }
+
+                const card = `
+                    <div class="week-card bg-white rounded-lg p-4 shadow-sm border border-gray-100 relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="font-bold text-gray-800">Minggu ${week.id}</h4>
+                                <span class="text-xs text-gray-400 font-mono">${week.date}</span>
+                            </div>
+                            <div class="${statusClass} px-2 py-1 rounded text-xs font-bold uppercase flex items-center gap-1">
+                                <i class="fas ${icon}"></i>
+                                ${statusRaw}
+                            </div>
+                        </div>
+                        ${week.hantar ? `
+                        <div class="mt-3 text-sm text-gray-600 border-t pt-2 border-dashed border-gray-200">
+                            <span class="text-xs text-gray-400 block">Tarikh Hantar:</span>
+                            <span class="font-medium ${hantarRaw !== '-' ? 'text-gray-800' : 'text-gray-300'}">
+                                ${hantarRaw}
+                            </span>
+                        </div>` : ''}
+                    </div>
+                `;
+                gridContainer.insertAdjacentHTML('beforeend', card);
+            });
+
+            // Show Results
+            document.getElementById('result-container').classList.remove('hidden');
+        }
+
+        // Enter key to trigger search
+        document.getElementById("ic-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkRecord();
+            }
+        });
+    </script>
+</body>
+</html>
