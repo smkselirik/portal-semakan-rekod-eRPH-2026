@@ -3,620 +3,388 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semakan e-RPH 2026 - SMK SELIRIK</title>
+    <title>Semakan e-RPH 2026 | SMK SELIRIK</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
+        /* Tetapan Warna & Font */
         :root {
-            --primary-bg: #2c0404; /* Dark Maroon */
-            --secondary-bg: #4a0d0d; /* Lighter Maroon for contrast */
-            --accent: #ffd700; /* Gold/Yellow for highlights */
-            --text-light: #f5f5f5;
-            --card-bg: #ffffff;
-            --text-dark: #333333;
-            --success: #198754;
-            --danger: #dc3545;
-            --warning: #ffc107;
+            --primary-maroon: #2d0505; /* Dark Maroon Background */
+            --header-maroon: #580000;  /* Slightly lighter for header */
+            --accent-gold: #fbbf24;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--primary-bg);
-            color: var(--text-light);
-            margin: 0;
-            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-maroon);
+            background-image: linear-gradient(180deg, #2d0505 0%, #1a0000 100%);
+            color: #333;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
         }
 
-        /* Header Section */
-        header {
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            text-align: center;
-            border-bottom: 3px solid var(--accent);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-
-        .logo-container img {
-            max-height: 100px;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
-        }
-
-        header h1 {
-            margin: 5px 0;
-            font-size: 1.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        header h2 {
-            margin: 0;
-            font-size: 1.2rem;
-            color: var(--accent);
-            font-weight: 300;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 20px;
-            flex: 1;
-        }
-
-        /* Search Box */
-        .search-wrapper {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            max-width: 600px;
-            margin: 0 auto 30px auto;
-        }
-
-        .search-wrapper label {
-            display: block;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        input[type="text"] {
-            padding: 12px 15px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            font-size: 1rem;
-            width: 70%;
-            transition: border-color 0.3s;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--primary-bg);
-            outline: none;
-        }
-
-        button {
-            padding: 12px 25px;
-            background-color: var(--primary-bg);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background-color: var(--secondary-bg);
-        }
-
-        /* Results Area */
-        #result-area {
-            display: none; /* Hidden by default */
-            animation: fadeIn 0.5s ease;
-        }
-
-        .profile-card {
-            background: var(--card-bg);
-            color: var(--text-dark);
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            border-left: 5px solid var(--accent);
-        }
-
-        .profile-card h3 {
-            margin-top: 0;
-            color: var(--primary-bg);
-            font-size: 1.5rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        .info-row {
-            margin: 8px 0;
-            font-size: 1.1rem;
-        }
-
-        .info-label {
-            font-weight: bold;
-            width: 150px;
-            display: inline-block;
-            color: #555;
-        }
-
-        /* Weekly Grid */
-        .weeks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .week-card {
+        /* Glassmorphism Effect for Cards */
+        .glass-panel {
             background: rgba(255, 255, 255, 0.95);
-            color: var(--text-dark);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
         }
 
-        .week-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .week-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            border-bottom: 1px dashed #ccc;
-            padding-bottom: 5px;
-        }
-
-        .week-title {
-            font-weight: bold;
-            color: var(--primary-bg);
-        }
-
-        .week-date {
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .status-hantar {
-            background-color: #d1e7dd;
-            color: var(--success);
-        }
-
-        .status-tidakhantar {
-            background-color: #f8d7da;
-            color: var(--danger);
-        }
-
-        .status-unknown {
-            background-color: #e2e3e5;
-            color: #666;
-        }
-
-        /* Summary Stats */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: var(--secondary-bg);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--accent);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        .catatan-box {
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #ffeeba;
-            margin-top: 10px;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: rgba(0,0,0,0.2);
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.6);
-            margin-top: auto;
-        }
-
-        /* Loading & Error */
-        .loading {
-            text-align: center;
-            padding: 20px;
-            font-style: italic;
-        }
-        
-        .error-msg {
-            color: var(--danger);
-            text-align: center;
-            margin-top: 10px;
-            font-weight: bold;
+        /* Animasi */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Responsive Mobile */
-        @media (max-width: 600px) {
-            .input-group {
-                flex-direction: column;
-            }
-            input[type="text"] {
-                width: 100%;
-                box-sizing: border-box;
-            }
-            button {
-                width: 100%;
-            }
-            .info-label {
-                width: 120px;
-                font-size: 0.9rem;
-            }
+        /* Status Badges */
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
+        .badge-success { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
+        .badge-fail { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+        .badge-neutral { background-color: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+
+        /* Loader */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #800000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            display: none;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-container">
-            <img id="header-logo" src="" alt="Logo Sekolah" style="display:none;">
+    <header class="bg-[#580000] text-white shadow-2xl relative z-10 border-b-4 border-red-900">
+        <div class="container mx-auto px-4 py-6 text-center">
+            <div class="flex justify-center mb-4">
+                <div class="bg-white p-2 rounded-full h-24 w-24 flex items-center justify-center shadow-lg border-2 border-gray-300">
+                    <img id="school-logo" src="" alt="Logo" class="h-full w-full object-contain hidden">
+                    <i id="default-logo" class="fas fa-school text-5xl text-[#800000]"></i>
+                </div>
+            </div>
+            
+            <h1 class="text-2xl md:text-4xl font-bold uppercase tracking-widest text-white drop-shadow-md">SMK SELIRIK, KAPIT</h1>
+            <p class="text-gray-300 mt-1 text-sm md:text-lg tracking-wide font-light">Portal Semakan Rekod Penghantaran e-RPH</p>
+            <div class="mt-4 inline-block bg-white text-[#800000] font-bold px-8 py-1 rounded-full text-sm shadow-xl">
+                TAHUN 2026
+            </div>
         </div>
-        <h1>SMK SELIRIK, KAPIT</h1>
-        <h2>REKOD PENGHANTARAN E-RPH 2026</h2>
     </header>
 
-    <div class="container">
+    <main class="flex-grow container mx-auto px-4 py-8 relative z-20">
         
-        <div class="search-wrapper">
-            <label for="ic-input">Masukkan No. Kad Pengenalan</label>
-            <div class="input-group">
-                <input type="text" id="ic-input" placeholder="Contoh: 800101135555" maxlength="14">
-                <button onclick="searchRecord()">Semak Rekod</button>
+        <div class="glass-panel p-8 max-w-2xl mx-auto mb-10 transform -translate-y-6">
+            <h2 class="text-center text-gray-800 font-bold mb-6 text-lg uppercase tracking-wide border-b pb-2">
+                <i class="fas fa-search mr-2 text-[#800000]"></i>Semak Rekod Guru
+            </h2>
+            
+            <div class="flex flex-col md:flex-row gap-3">
+                <input type="text" id="ic-input" placeholder="Masukkan No. Kad Pengenalan" 
+                    class="flex-grow p-4 rounded-lg border-2 border-gray-300 focus:border-[#800000] focus:outline-none text-center md:text-left text-lg shadow-inner font-mono tracking-wider transition-colors">
+                
+                <button onclick="fetchData()" 
+                    class="bg-[#800000] hover:bg-red-900 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105 active:scale-95">
+                    SEMAK <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
-            <div id="status-msg"></div>
+
+            <div id="loader" class="loader mt-6"></div>
+            <p id="error-msg" class="text-red-600 bg-red-100 border border-red-200 text-center mt-4 hidden font-semibold p-3 rounded"></p>
         </div>
 
-        <div id="result-area">
-            <div class="profile-card">
-                <h3>Maklumat Guru</h3>
-                <div class="info-row">
-                    <span class="info-label">Nama:</span>
-                    <span id="p-name"></span>
+        <div id="result-section" class="hidden max-w-6xl mx-auto">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 fade-in" style="animation-delay: 0.1s;">
+                
+                <div class="glass-panel p-6 flex flex-col justify-center border-l-8 border-[#800000]">
+                    <div class="text-gray-500 text-xs font-bold uppercase mb-1">Nama Guru</div>
+                    <h2 id="disp-name" class="text-2xl font-bold text-gray-900 leading-tight mb-2">Nama Guru</h2>
+                    
+                    <div class="text-gray-500 text-xs font-bold uppercase mb-1 mt-2">Jawatan</div>
+                    <p id="disp-jawatan" class="text-[#800000] font-bold text-md uppercase">Jawatan</p>
+                    
+                    <div class="mt-4 flex items-center text-gray-600 bg-gray-100 p-2 rounded w-fit">
+                        <i class="fas fa-id-card mr-2"></i> <span id="disp-ic" class="font-mono font-semibold">IC</span>
+                    </div>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">No. KP:</span>
-                    <span id="p-ic"></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Jawatan:</span>
-                    <b id="p-position"></b>
+
+                <div class="glass-panel p-6 lg:col-span-2 flex flex-col justify-between">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <div class="bg-red-50 p-3 rounded-lg text-center border border-red-100">
+                            <span class="block text-2xl font-bold text-red-600" id="stat-tidak">0</span>
+                            <span class="text-[10px] uppercase font-bold text-gray-500">Tidak Hantar</span>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded-lg text-center border border-green-100">
+                            <span class="block text-2xl font-bold text-green-600" id="stat-hantar">0</span>
+                            <span class="text-[10px] uppercase font-bold text-gray-500">Bil. Hantar</span>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg text-center border border-gray-200">
+                            <span class="block text-2xl font-bold text-gray-700" id="stat-minggu">0</span>
+                            <span class="text-[10px] uppercase font-bold text-gray-500">Jumlah Minggu</span>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg text-center border border-blue-100">
+                            <span class="block text-2xl font-bold text-blue-600" id="stat-peratus">0%</span>
+                            <span class="text-[10px] uppercase font-bold text-gray-500">Peratus</span>
+                        </div>
+                    </div>
+                    
+                    <div id="catatan-box" class="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded hidden">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle text-yellow-600"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-xs font-bold text-yellow-700 uppercase">Catatan Pentadbir</p>
+                                <p id="disp-catatan" class="text-sm text-yellow-800 mt-1 italic"></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <h3 style="border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 20px;">Analisis Keseluruhan</h3>
-            <div class="summary-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="s-sent">0</div>
-                    <div class="stat-label">Bilangan Hantar</div>
+            <div class="glass-panel p-6 md:p-8 fade-in" style="animation-delay: 0.3s;">
+                <div class="flex items-center justify-between mb-6 border-b pb-4">
+                    <h3 class="text-xl font-bold text-gray-800"><i class="fas fa-calendar-alt mr-2 text-[#800000]"></i>Rekod Mingguan</h3>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="s-notsent" style="color: #ff6b6b;">0</div>
-                    <div class="stat-label">Bilangan Tidak Hantar</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="s-percent">0%</div>
-                    <div class="stat-label">Peratus</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="s-total">0</div>
-                    <div class="stat-label">Jumlah Minggu</div>
-                </div>
-            </div>
-            <div id="s-notes" class="catatan-box" style="display:none;"></div>
 
-            <h3 style="border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 20px; margin-top: 30px;">Rekod Mingguan</h3>
-            <div class="weeks-grid" id="weeks-container">
-                </div>
+                <div id="weeks-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    </div>
+            </div>
+
         </div>
+    </main>
 
-    </div>
-
-    <footer>
-        &copy; Hakcipta NDJE@Selirik, Kapit 2026
+    <footer class="bg-black/80 text-gray-400 py-6 text-center text-xs mt-auto backdrop-blur-sm">
+        <p>&copy; Hakcipta NDJE@Selirik, Kapit 2026</p>
     </footer>
 
     <script>
-        // --- KONFIGURASI DATA ---
-        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSAfGkb0V0XOKhlyjNgHNeSTVoRO6tw8gorjTKVzJ9lqLwm_pL38utfOBJOu7yXBMszjk6m78XP_6f2/pub?gid=1853580490&single=true&output=csv';
+        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSAfGkb0V0XOKhlyjNgHNeSTVoRO6tw8gorjTKVzJ9lqLwm_pL38utfOBJOu7yXBMszjk6m78XP_6f2/pub?gid=1853580490&single=true&output=csv";
 
-        // Definisi Kolum (Data Minggu)
-        // Format: ID Minggu, Tarikh, Kolum Tarikh Hantar, Kolum Status
+        // Konfigurasi Kolum Minggu (Sesuai dengan permintaan pengguna)
         const weeksConfig = [
-            { w: 1, date: '30.01.2026', cDate: 'F', cStat: 'G' },
-            { w: 2, date: '30.01.2026', cDate: 'J', cStat: 'K' },
-            { w: 3, date: '30.01.2026', cDate: 'N', cStat: 'O' },
-            { w: 4, date: '06.02.2026', cDate: 'R', cStat: 'S' },
-            { w: 5, date: '13.02.2026', cDate: 'V', cStat: 'W' },
-            { w: 6, date: '20.02.2026', cDate: 'Z', cStat: 'AA' },
-            { w: 7, date: '27.02.2026', cDate: 'AD', cStat: 'AF' },
-            { w: 8, date: '06.03.2026', cDate: 'AH', cStat: 'AI' },
-            { w: 9, date: '13.03.2026', cDate: 'AL', cStat: 'AM' },
-            { w: 10, date: '20.03.2026', cDate: 'AP', cStat: 'AQ' },
-            { w: 11, date: '03.04.2026', cDate: 'AT', cStat: 'AU' },
-            { w: 12, date: '10.04.2026', cDate: 'AX', cStat: 'AY' },
-            { w: 13, date: '17.04.2026', cDate: 'BC', cStat: 'BD' },
-            { w: 14, date: '24.04.2026', cDate: 'BF', cStat: 'BG' },
-            { w: 15, date: '01.05.2026', cDate: 'BJ', cStat: 'BL' },
-            { w: 16, date: '08.05.2026', cDate: 'BN', cStat: 'BO' },
-            { w: 17, date: '15.05.2026', cDate: 'BR', cStat: 'BS' },
-            { w: 18, date: '22.05.2026', cDate: 'BV', cStat: 'BW' },
-            { w: 19, date: '12.06.2026', cDate: 'BZ', cStat: 'CA' },
-            { w: 20, date: '19.06.2026', cDate: 'CD', cStat: 'CE' },
-            { w: 21, date: '26.06.2026', cDate: 'CH', cStat: 'CI' },
-            { w: 22, date: '03.07.2026', cDate: 'CL', cStat: 'CM' },
-            { w: 23, date: '10.07.2026', cDate: 'CP', cStat: 'CQ' },
-            { w: 24, date: '17.07.2026', cDate: 'CT', cStat: 'CU' },
-            { w: 25, date: '24.07.2026', cDate: 'CX', cStat: 'CY' },
-            { w: 26, date: '31.07.2026', cDate: 'DB', cStat: 'DC' },
-            { w: 27, date: '07.08.2026', cDate: 'DF', cStat: 'DG' },
-            { w: 28, date: '14.08.2026', cDate: 'DJ', cStat: 'DK' },
-            { w: 29, date: '21.08.2026', cDate: 'DN', cStat: 'DO' },
-            { w: 30, date: '28.08.2026', cDate: 'DR', cStat: 'DS' },
-            { w: 31, date: '11.09.2026', cDate: 'DV', cStat: 'DW' },
-            { w: 32, date: '18.09.2026', cDate: 'DZ', cStat: 'EA' },
-            { w: 33, date: '25.09.2026', cDate: 'ED', cStat: 'EE' },
-            { w: 34, date: '02.10.2026', cDate: 'EH', cStat: 'EI' },
-            { w: 35, date: '09.10.2026', cDate: 'EL', cStat: 'EM' },
-            { w: 36, date: '16.10.2026', cDate: 'EP', cStat: 'EQ' },
-            { w: 37, date: '23.10.2026', cDate: 'ET', cStat: 'EU' },
-            { w: 38, date: '30.10.2026', cDate: 'EX', cStat: 'EY' },
-            { w: 39, date: '06.11.2026', cDate: 'FB', cStat: 'FC' },
-            { w: 40, date: '13.11.2026', cDate: 'FF', cStat: 'FG' },
-            { w: 41, date: '20.11.2026', cDate: 'FJ', cStat: 'FK' },
-            { w: 42, date: '27.11.2026', cDate: 'FN', cStat: 'FO' },
-            { w: 43, date: '04.12.2026', cDate: 'FQ', cStat: 'FS' }
+            { w: 1, date: "30.01.2026", h: "F", s: "G" },
+            { w: 2, date: "30.01.2026", h: "J", s: "K" },
+            { w: 3, date: "30.01.2026", h: "N", s: "O" },
+            { w: 4, date: "06.02.2026", h: "R", s: "S" },
+            { w: 5, date: "13.02.2026", h: "V", s: "W" },
+            { w: 6, date: "20.02.2026", h: "Z", s: "AA" },
+            { w: 7, date: "27.02.2026", h: "AD", s: "AF" },
+            { w: 8, date: "06.03.2026", h: "AH", s: "AI" },
+            { w: 9, date: "13.03.2026", h: "AL", s: "AM" },
+            { w: 10, date: "20.03.2026", h: "AP", s: "AQ" },
+            { w: 11, date: "03.04.2026", h: "AT", s: "AU" },
+            { w: 12, date: "10.04.2026", h: "AX", s: "AY" },
+            { w: 13, date: "17.04.2026", h: "BC", s: "BD" },
+            { w: 14, date: "24.04.2026", h: "BF", s: "BG" },
+            { w: 15, date: "01.05.2026", h: "BJ", s: "BL" },
+            { w: 16, date: "08.05.2026", h: "BN", s: "BO" },
+            { w: 17, date: "15.05.2026", h: "BR", s: "BS" },
+            { w: 18, date: "22.05.2026", h: "BV", s: "BW" },
+            { w: 19, date: "12.06.2026", h: "BZ", s: "CA" },
+            { w: 20, date: "19.06.2026", h: "CD", s: "CE" },
+            { w: 21, date: "26.06.2026", h: "CH", s: "CI" },
+            { w: 22, date: "03.07.2026", h: "CL", s: "CM" },
+            { w: 23, date: "10.07.2026", h: "CP", s: "CQ" },
+            { w: 24, date: "17.07.2026", h: "CT", s: "CU" },
+            { w: 25, date: "24.07.2026", h: "CX", s: "CY" },
+            { w: 26, date: "31.07.2026", h: "DB", s: "DC" },
+            { w: 27, date: "07.08.2026", h: "DF", s: "DG" },
+            { w: 28, date: "14.08.2026", h: "DJ", s: "DK" },
+            { w: 29, date: "21.08.2026", h: "DN", s: "DO" },
+            { w: 30, date: "28.08.2026", h: "DR", s: "DS" },
+            { w: 31, date: "11.09.2026", h: "DV", s: "DW" },
+            { w: 32, date: "18.09.2026", h: "DZ", s: "EA" },
+            { w: 33, date: "25.09.2026", h: "ED", s: "EE" },
+            { w: 34, date: "02.10.2026", h: "EH", s: "EI" },
+            { w: 35, date: "09.10.2026", h: "EL", s: "EM" },
+            { w: 36, date: "16.10.2026", h: "EP", s: "EQ" },
+            { w: 37, date: "23.10.2026", h: "ET", s: "EU" },
+            { w: 38, date: "30.10.2026", h: "EX", s: "EY" },
+            { w: 39, date: "06.11.2026", h: "FB", s: "FC" },
+            { w: 40, date: "13.11.2026", h: "FF", s: "FG" },
+            { w: 41, date: "20.11.2026", h: "FJ", s: "FK" },
+            { w: 42, date: "27.11.2026", h: "FN", s: "FO" },
+            { w: 43, date: "04.12.2026", h: "FQ", s: "FS" }
         ];
 
-        // Global variable to store CSV data
-        let csvData = [];
-        let dataLoaded = false;
-
-        // --- HELPER FUNCTIONS ---
-
-        // Convert Excel Column Letter to Index (0-based)
-        // e.g., 'A' -> 0, 'Z' -> 25, 'AA' -> 26
+        // Fungsi Tukar Huruf Kolum (A, Z, AA) ke Index Array (0, 25, 26)
         function getColIndex(letter) {
             let column = 0;
-            let length = letter.length;
-            for (let i = 0; i < length; i++) {
-                column += (letter.charCodeAt(i) - 64) * Math.pow(26, length - i - 1);
+            for (let i = 0; i < letter.length; i++) {
+                column += (letter.charCodeAt(i) - 64) * Math.pow(26, letter.length - i - 1);
             }
-            return column - 1;
+            return column - 1; 
         }
 
-        // CSV Parser (Handles quoted fields properly)
-        function parseCSV(text) {
-            const rows = [];
-            let currentRow = [];
-            let currentCell = '';
-            let insideQuote = false;
+        // Fungsi Utama Data Fetching
+        function fetchData() {
+            const inputVal = document.getElementById("ic-input").value;
+            const cleanIC = inputVal.replace(/[^0-9]/g, ""); // Buang sengkang/ruang
+            
+            const loader = document.getElementById("loader");
+            const errorMsg = document.getElementById("error-msg");
+            const resultSection = document.getElementById("result-section");
 
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                const nextChar = text[i + 1];
+            // Reset UI
+            resultSection.classList.add("hidden");
+            errorMsg.classList.add("hidden");
 
-                if (char === '"') {
-                    if (insideQuote && nextChar === '"') {
-                        currentCell += '"';
-                        i++; // Skip escape quote
-                    } else {
-                        insideQuote = !insideQuote;
-                    }
-                } else if (char === ',' && !insideQuote) {
-                    currentRow.push(currentCell.trim());
-                    currentCell = '';
-                } else if ((char === '\r' || char === '\n') && !insideQuote) {
-                    if (currentCell || currentRow.length > 0) {
-                        currentRow.push(currentCell.trim());
-                        rows.push(currentRow);
-                        currentRow = [];
-                        currentCell = '';
-                    }
-                    if (char === '\r' && nextChar === '\n') i++;
-                } else {
-                    currentCell += char;
-                }
-            }
-            if (currentCell || currentRow.length > 0) {
-                currentRow.push(currentCell.trim());
-                rows.push(currentRow);
-            }
-            return rows;
-        }
-
-        // --- CORE LOGIC ---
-
-        function init() {
-            const statusDiv = document.getElementById('status-msg');
-            statusDiv.innerHTML = '<div class="loading">Sedang memuat turun data rekod...</div>';
-
-            fetch(SHEET_URL)
-                .then(response => response.text())
-                .then(text => {
-                    csvData = parseCSV(text);
-                    dataLoaded = true;
-                    statusDiv.innerHTML = ''; // Clear loading
-                    
-                    // Setup Logo if available in A1 (Row 0, Col 0)
-                    if (csvData.length > 0 && csvData[0][0]) {
-                        const logoUrl = csvData[0][0];
-                        const img = document.getElementById('header-logo');
-                        if (logoUrl.startsWith('http')) {
-                            img.src = logoUrl;
-                            img.style.display = 'inline-block';
-                        }
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    statusDiv.innerHTML = '<div class="error-msg">Gagal menyambung ke pangkalan data. Sila refresh page.</div>';
-                });
-        }
-
-        function searchRecord() {
-            if (!dataLoaded) {
-                alert("Sila tunggu data habis dimuat turun.");
+            if(cleanIC.length < 6) {
+                errorMsg.textContent = "Sila masukkan No. Kad Pengenalan yang sah.";
+                errorMsg.classList.remove("hidden");
                 return;
             }
 
-            const inputIC = document.getElementById('ic-input').value.trim();
-            const resultArea = document.getElementById('result-area');
-            const statusDiv = document.getElementById('status-msg');
+            loader.style.display = "block";
 
-            if (!inputIC) {
-                alert("Sila masukkan No. Kad Pengenalan.");
+            Papa.parse(SHEET_URL, {
+                download: true,
+                complete: function(results) {
+                    loader.style.display = "none";
+                    processData(results.data, cleanIC);
+                },
+                error: function(err) {
+                    loader.style.display = "none";
+                    errorMsg.textContent = "Gagal menyambung ke pangkalan data. Sila periksa internet anda.";
+                    errorMsg.classList.remove("hidden");
+                }
+            });
+        }
+
+        function processData(data, targetIC) {
+            const errorMsg = document.getElementById("error-msg");
+            
+            // 1. Set Logo jika ada di A1 (Data[0][0])
+            if (data.length > 0 && data[0][0] && data[0][0].startsWith("http")) {
+                const logoImg = document.getElementById("school-logo");
+                const defLogo = document.getElementById("default-logo");
+                logoImg.src = data[0][0];
+                logoImg.classList.remove("hidden");
+                defLogo.classList.add("hidden");
+            }
+
+            // Index Kolum Utama
+            const idxIC = getColIndex("B");
+            const idxName = getColIndex("C");
+            const idxJawatan = getColIndex("D"); // Anggaran Jawatan sebelah nama
+
+            // Cari Guru
+            const teacher = data.find(row => {
+                if(!row[idxIC]) return false;
+                const rowIC = row[idxIC].toString().replace(/[^0-9]/g, "");
+                return rowIC === targetIC;
+            });
+
+            if (!teacher) {
+                errorMsg.textContent = "Rekod tidak ditemui. Sila pastikan No. Kad Pengenalan betul.";
+                errorMsg.classList.remove("hidden");
                 return;
             }
 
-            // Find user (Search Column B -> Index 1)
-            // Skip header row usually, but iterating all is safe enough
-            let foundRow = null;
-            for (let i = 1; i < csvData.length; i++) {
-                // Check if index exists to prevent error
-                if (csvData[i][1] && csvData[i][1].replace(/[^0-9]/g, '') === inputIC.replace(/[^0-9]/g, '')) {
-                    foundRow = csvData[i];
-                    break;
-                }
-            }
+            // Papar Data Profil
+            document.getElementById("disp-name").textContent = teacher[idxName] || "TIADA NAMA";
+            document.getElementById("disp-ic").textContent = teacher[idxIC];
+            document.getElementById("disp-jawatan").textContent = teacher[idxJawatan] || "GURU"; // Bold dikawal CSS
 
-            if (foundRow) {
-                statusDiv.innerHTML = '';
-                displayResult(foundRow);
-                resultArea.style.display = 'block';
+            // Papar Statistik
+            document.getElementById("stat-tidak").textContent = teacher[getColIndex("GG")] || "0";
+            document.getElementById("stat-hantar").textContent = teacher[getColIndex("GH")] || "0";
+            document.getElementById("stat-minggu").textContent = teacher[getColIndex("GI")] || "0";
+            document.getElementById("stat-peratus").textContent = teacher[getColIndex("GJ")] || "0%";
+
+            // Papar Catatan
+            const catatan = teacher[getColIndex("GK")];
+            const catBox = document.getElementById("catatan-box");
+            if (catatan && catatan.trim() !== "") {
+                document.getElementById("disp-catatan").textContent = catatan;
+                catBox.classList.remove("hidden");
             } else {
-                resultArea.style.display = 'none';
-                statusDiv.innerHTML = '<div class="error-msg">Rekod tidak dijumpai. Sila semak No. Kad Pengenalan anda.</div>';
+                catBox.classList.add("hidden");
             }
-        }
 
-        function displayResult(row) {
-            // 1. Basic Info
-            document.getElementById('p-name').textContent = row[2] || '-'; // Col C
-            document.getElementById('p-ic').textContent = row[1] || '-';   // Col B
-            document.getElementById('p-position').textContent = row[3] || '-'; // Col D
-
-            // 2. Weekly Records
-            const weeksContainer = document.getElementById('weeks-container');
-            weeksContainer.innerHTML = ''; // Clear previous
+            // Papar Grid Mingguan
+            const grid = document.getElementById("weeks-grid");
+            grid.innerHTML = ""; // Kosongkan dulu
 
             weeksConfig.forEach(week => {
-                const idxDate = getColIndex(week.cDate);
-                const idxStat = getColIndex(week.cStat);
+                const statusRaw = teacher[getColIndex(week.s)] || "";
+                const tarikhRaw = teacher[getColIndex(week.h)] || "-";
                 
-                const dateSent = row[idxDate] || '-';
-                const status = row[idxStat] || 'TIADA REKOD';
+                let badgeClass = "badge-neutral";
+                let icon = "fa-minus";
+                
+                const s = statusRaw.toLowerCase();
 
-                // Determine badge color class
-                let badgeClass = 'status-unknown';
-                if (status.toLowerCase().includes('hantar') && !status.toLowerCase().includes('tidak')) {
-                    badgeClass = 'status-hantar';
-                } else if (status.toLowerCase().includes('tidak') || status === '-') {
-                    badgeClass = 'status-tidakhantar';
+                if(s.includes("hantar") || s.includes("selesai") || s.includes("siap")) {
+                    badgeClass = "badge-success";
+                    icon = "fa-check";
+                } else if (s.includes("tidak") || s.includes("gagal") || s.includes("x")) {
+                    badgeClass = "badge-fail";
+                    icon = "fa-times";
                 }
 
                 const cardHTML = `
-                    <div class="week-card">
-                        <div class="week-header">
-                            <span class="week-title">MINGGU ${week.w}</span>
-                            <span class="week-date">${week.date}</span>
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-lg transition duration-200 flex flex-col justify-between h-full">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Minggu</span>
+                                    <h4 class="text-lg font-bold text-gray-800">${week.w}</h4>
+                                </div>
+                                <span class="text-[10px] text-gray-500 font-mono bg-white px-2 py-1 rounded border">${week.date}</span>
+                            </div>
+                            
+                            <div class="mt-2">
+                                <span class="${badgeClass} badge flex items-center gap-1 w-fit">
+                                    <i class="fas ${icon}"></i> ${statusRaw || "Tiada Status"}
+                                </span>
+                            </div>
                         </div>
-                        <div style="margin-bottom:5px; font-size:0.9rem; color:#555;">Tarikh Hantar:</div>
-                        <div style="margin-bottom:10px; font-weight:500;">${dateSent}</div>
-                        <span class="status-badge ${badgeClass}">${status}</span>
+                        
+                        <div class="mt-3 pt-2 border-t border-gray-200 border-dashed">
+                            <p class="text-[10px] text-gray-400 uppercase font-bold">Tarikh Hantar</p>
+                            <p class="text-sm font-semibold text-gray-700 truncate">${tarikhRaw}</p>
+                        </div>
                     </div>
                 `;
-                weeksContainer.innerHTML += cardHTML;
+                grid.insertAdjacentHTML("beforeend", cardHTML);
             });
 
-            // 3. Summary Stats
-            // GG=188, GH=189, GI=190, GJ=191, GK=192 (Using helper to be safe)
-            document.getElementById('s-notsent').textContent = row[getColIndex('GG')] || '0';
-            document.getElementById('s-sent').textContent = row[getColIndex('GH')] || '0';
-            document.getElementById('s-total').textContent = row[getColIndex('GI')] || '0';
-            document.getElementById('s-percent').textContent = row[getColIndex('GJ')] || '0%';
-            
-            const notes = row[getColIndex('GK')];
-            const notesDiv = document.getElementById('s-notes');
-            if (notes && notes.trim() !== '') {
-                notesDiv.style.display = 'block';
-                notesDiv.textContent = 'Catatan: ' + notes;
-            } else {
-                notesDiv.style.display = 'none';
-            }
+            // Tunjuk Result
+            document.getElementById("result-section").classList.remove("hidden");
         }
 
-        // Allow Enter key to search
-        document.getElementById('ic-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                searchRecord();
+        // Event Listener untuk butang Enter
+        document.getElementById("ic-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                fetchData();
             }
         });
-
-        // Run on load
-        window.onload = init;
-
     </script>
 </body>
 </html>
-    
- 
